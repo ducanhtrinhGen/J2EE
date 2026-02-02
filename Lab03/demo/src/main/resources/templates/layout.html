@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Management</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/books">Books</a>
+        </nav>
+    </header>
+
+    <main layout:fragment="content">
+        <!-- Content will be replaced by child pages -->
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Book Management Application</p>
+    </footer>
+
+</body>
+
+</html>

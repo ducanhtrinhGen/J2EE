@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Sửa sách</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <h1>Sửa sách</h1>
+        <form th:action="@{/books/edit}" th:object="${book}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <label>Tiêu đề:</label>
+            <input type="text" th:field="*{title}" /><br />
+            <label>Tác giả:</label>
+            <input type="text" th:field="*{author}" /><br />
+            <button type="submit">Cập nhật</button>
+        </form>
+    </div>
+</body>
+
+</html>
