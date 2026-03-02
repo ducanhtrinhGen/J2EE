@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý sản phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0fdfa;
+            color: #0f172a;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0f766e;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+        }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #0f766e;
+            color: white;
+        }
+
+        th {
+            padding: 18px;
+            text-align: left;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 18px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        tbody tr {
+            transition: 0.25s;
+        }
+
+        tbody tr:hover {
+            background: #ccfbf1;
+        }
+
+        .product-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .btn-edit {
+            background: #3b82f6;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+        }
+
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #64748b;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="topbar">
+            <div class="title">📦 Quản lý sản phẩm</div>
+            <a href="/products/create" class="btn-add">+ Thêm sản phẩm</a>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Hình ảnh</th>
+                        <th>Danh mục</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(listproduct)}">
+                        <td colspan="6" class="empty">
+                            Chưa có sản phẩm nào
+                        </td>
+                    </tr>
+
+                    <tr th:each="product, iterStat : ${listproduct}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${#numbers.formatInteger(product.price,0,'COMMA') + ' VNĐ'}"></td>
+
+                        <td>
+                            <img th:if="${product.image != null}" th:src="@{/images/{img}(img=${product.image})}"
+                                class="product-image">
+                        </td>
+
+                        <td>
+                            <span class="badge" th:text="${product.category?.name}">
+                            </span>
+                        </td>
+
+                        <td>
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-edit">Sửa</a>
+
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-delete"
+                                onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này?')">
+                                Xoá
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

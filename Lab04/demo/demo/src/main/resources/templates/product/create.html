@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Sản Phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        input[type="file"] {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus,
+        select:focus {
+            box-shadow: 0 0 0 2px #ffffff;
+        }
+
+        .error-message {
+            font-size: 13px;
+            color: #ffdede;
+            margin-top: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #764ba2;
+        }
+
+        .btn-primary:hover {
+            background: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>Thêm Sản Phẩm Mới</h1>
+
+        <form th:action="@{/products/create}" th:object="${product}" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>Tên sản phẩm</label>
+                <input type="text" th:field="*{name}">
+                <span class="error-message" th:errors="*{name}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Giá</label>
+                <input type="number" th:field="*{price}">
+                <span class="error-message" th:errors="*{price}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Danh mục</label>
+                <select name="category_id">
+                    <option value="">-- Chọn danh mục --</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Hình ảnh</label>
+                <input type="file" name="imageProduct" accept="image/*">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                <a href="/products" class="btn btn-secondary">Hủy</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
