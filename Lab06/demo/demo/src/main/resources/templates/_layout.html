@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Demo Products - J2EE Application">
+    <title>Demo Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.net/bootstrap/5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjH3xwIyaIJXw7x0awLyQMSawLXfKCILQhOBpKokQ0AWI0kzkFc4bPjJ" crossorigin="anonymous">
+</head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+    <!-- Navbar -->
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                <a class="nav-link d-inline" th:href="@{/products}">Home</a>
+                <a class="nav-link d-inline" th:href="@{/products/create}">Products</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Form -->
+    <div class="bg-light border-bottom py-3">
+        <div class="container-fluid">
+            <form class="d-flex" th:action="@{/products}" th:method="get">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1">
+        <div layout:fragment="content" class="container body-content">
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top py-4 mt-5">
+        <div class="container text-center">
+            <hr />
+            <p class="mb-0">©Copy; 2025 - Phát triển ứng dụng với J2EE</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

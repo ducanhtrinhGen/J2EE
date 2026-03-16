@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/css/product-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo">ShopPro</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home nav-icon"></i>
+                <span>Trang chủ</span>
+            </a>
+            <a href="/products" class="nav-link active">
+                <i class="fas fa-boxes nav-icon"></i>
+                <span>Sản phẩm</span>
+            </a>
+        </nav>
+        <div class="user-section">
+            <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
+                <div style="color: #a0a0a0; font-size: 13px;">Quản trị viên</div>
+            </div>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span>Đăng xuất</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="page-title">Danh sách Sản phẩm</div>
+                <div th:if="${isAdmin}">
+                    <a href="/products/create" class="btn-primary">
+                        <i class="fas fa-plus"></i> Thêm sản phẩm mới
+                    </a>
+                </div>
+            </div>
+
+            <!-- Permission Notice -->
+            <div th:if="!${isAdmin}" 
+                 style="background: rgba(254, 243, 199, 0.2); border: 1px solid rgba(252, 211, 77, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                <i class="fas fa-info-circle" style="color: #f59e0b; margin-right: 10px;"></i>
+                <strong>Thông báo:</strong> Bạn không có quyền thêm, sửa hoặc xóa sản phẩm. Liên hệ quản trị viên.
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="search-filter">
+                <input type="text" class="search-input" placeholder="Tìm kiếm sản phẩm...">
+                <select class="form-select" style="min-width: 200px;">
+                    <option>Tất cả danh mục</option>
+                </select>
+                <button class="btn-primary" style="padding: 14px 24px;">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+            </div>
+
+            <!-- Products Grid -->
+            <div th:if="${#lists.isEmpty(products)}" class="empty-state">
+                <div class="empty-icon">📦</div>
+                <h3 style="font-size: 24px; margin-bottom: 10px;">Chưa có sản phẩm nào</h3>
+                <p style="color: var(--text-secondary);">Hãy thêm sản phẩm đầu tiên để bắt đầu.</p>
+                <a th:if="${isAdmin}" href="/products/create" class="btn-primary" style="margin-top: 20px; display: inline-block;">
+                    <i class="fas fa-plus"></i> Thêm sản phẩm ngay
+                </a>
+            </div>
+
+            <div class="product-grid" th:unless="${#lists.isEmpty(products)}">
+                <div th:each="product, iter : ${products}" class="product-card">
+                    <img th:if="${product.image}" th:src="@{/products/image/{img}(img=${product.image})}" 
+                         alt="Ảnh sản phẩm" class="product-image" 
+                         onerror="this.style.display='none'">
+                    <div class="product-no-image" th:unless="${product.image}" 
+                         style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; border-radius: 16px; margin-bottom: 20px; color: white; font-size: 48px;">
+                        📦
+                    </div>
+                    <div class="product-info">
+                        <h3 th:text="${product.name}">Sản phẩm mẫu</h3>
+                        <div class="product-price" th:text="'Giá: ' + ${#numbers.formatInteger(product.price, 0, 'COMMA')} + ' ₫'">Giá: 0 ₫</div>
+                        <div class="product-category" th:text="'Danh mục: ' + ${product.category?.name}">Danh mục: Không xác định</div>
+                        <div th:if="${isAdmin}" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn-warning" style="text-decoration: none;">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn-danger" style="text-decoration: none;" 
+                               onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Smooth animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+    </script>
+</body>
+</html>
