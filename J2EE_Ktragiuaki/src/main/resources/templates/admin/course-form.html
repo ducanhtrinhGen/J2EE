@@ -9,36 +9,36 @@
 <body>
     <main class="page-shell">
         <section class="hero">
-            <p class="eyebrow">Admin Course</p>
-            <h1 th:text="${formTitle}">Create Course</h1>
-            <p class="hero-copy">Nhap thong tin hoc phan gom ten, so tin chi, giang vien va ten file hinh anh.</p>
+            <p class="eyebrow">Quản lý khóa học</p>
+            <h1 th:text="${formTitle}">Thêm Khóa Học Mới</h1>
+            <p class="hero-copy">Nhập thông tin học phần gồm tên, số tín chỉ, giảng viên và tên file hình ảnh.</p>
         </section>
 
         <section class="admin-form-shell">
             <form class="admin-form" th:action="${formAction}" th:object="${course}" method="post">
                 <label>
-                    Ten hoc phan
+                    Tên học phần
                     <input type="text" th:field="*{name}" required>
                 </label>
 
                 <label>
-                    So tin chi
+                    Số tín chỉ
                     <input type="number" min="1" th:field="*{credits}" required>
                 </label>
 
                 <label>
-                    Giang vien
+                    Giảng viên
                     <input type="text" th:field="*{lecturer}" required>
                 </label>
 
                 <label>
-                    Hinh anh
-                    <input type="text" th:field="*{imageUrl}" placeholder="java.jpg hoac /images/course-1.svg" required>
+                    Hình ảnh
+                    <input type="text" th:field="*{imageUrl}" placeholder="java.jpg hoặc /images/course-1.svg" required>
                 </label>
 
                 <div class="admin-actions">
-                    <a class="page-link" th:href="@{/admin/courses}">Huy</a>
-                    <button class="page-link page-number active" type="submit">Luu</button>
+                    <a class="page-link" th:href="@{/admin/courses}">Hủy</a>
+                    <button class="page-link page-number active" type="submit">Lưu</button>
                 </div>
             </form>
         </section>

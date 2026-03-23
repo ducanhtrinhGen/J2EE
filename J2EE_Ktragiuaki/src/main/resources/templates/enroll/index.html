@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký học phần</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Dành cho Sinh viên</p>
+            <h1>Trang đăng ký học phần</h1>
+            <p class="hero-copy">Trang này chỉ tài khoản có quyền STUDENT mới truy cập được. Bạn có thể dùng trang này để mở rộng chức năng đăng ký học phần sau.</p>
+        </section>
+
+        <section class="admin-form-shell">
+            <div class="auth-note">
+                <strong>Phân quyền:</strong>
+                <span>/enroll và /enroll/** chỉ dành cho STUDENT.</span>
+            </div>
+
+            <div class="admin-actions">
+                <a class="page-link" th:href="@{/home}">Về Trang Chủ</a>
+                <form class="inline-form" th:action="@{/logout}" method="post">
+                    <button class="page-link logout-btn" type="submit">Đăng xuất</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -90,6 +90,10 @@ body {
     gap: 10px;
 }
 
+.inline-form {
+    margin: 0;
+}
+
 .course-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -270,6 +274,39 @@ body {
     background: #fff;
     font: inherit;
     color: var(--text);
+}
+
+.form-message {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+
+.error-message {
+    background: rgba(182, 67, 43, 0.12);
+    color: #9f2e17;
+}
+
+.success-message {
+    background: rgba(88, 144, 122, 0.14);
+    color: #2f6c58;
+}
+
+.auth-note {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(217, 108, 61, 0.16);
+    border-radius: 16px;
+    background: rgba(217, 108, 61, 0.08);
+    color: var(--accent-deep);
+}
+
+.logout-btn {
+    cursor: pointer;
+    font: inherit;
 }
 
 @media (max-width: 720px) {

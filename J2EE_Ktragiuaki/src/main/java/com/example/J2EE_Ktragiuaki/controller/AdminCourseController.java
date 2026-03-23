@@ -29,7 +29,7 @@ public class AdminCourseController {
     @GetMapping("/create")
     public String createForm(Model model) {
         model.addAttribute("course", new Category());
-        model.addAttribute("formTitle", "Create Course");
+        model.addAttribute("formTitle", "Thêm Khóa Học Mới");
         model.addAttribute("formAction", "/admin/courses/create");
         return "admin/course-form";
     }
@@ -43,7 +43,7 @@ public class AdminCourseController {
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("course", categoryService.getCategoryById(id));
-        model.addAttribute("formTitle", "Update Course");
+        model.addAttribute("formTitle", "Cập Nhật Khóa Học");
         model.addAttribute("formAction", "/admin/courses/edit/" + id);
         return "admin/course-form";
     }

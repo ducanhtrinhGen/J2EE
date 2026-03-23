@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +9,37 @@
 <body>
     <main class="page-shell">
         <section class="hero">
-            <p class="eyebrow">Category Catalog</p>
-            <h1>Danh sach hoc phan</h1>
-            <p class="hero-copy">
-            </p>
+            <p class="eyebrow">Danh mục học phần</p>
+            <h1>Danh sách học phần</h1>
+            <p class="hero-copy"></p>
+        </section>
+
+        <section th:if="${param.enrollSuccess}" style="margin-top: 20px;">
+            <p class="form-message success-message" style="margin: 0;">Đăng ký học phần thành công!</p>
+        </section>
+
+        <section th:if="${param.unenrollSuccess}" style="margin-top: 20px;">
+            <p class="form-message error-message" style="margin: 0;">Đã hủy học phần!</p>
         </section>
 
         <section class="toolbar">
             <div>
-                <p class="toolbar-label">Tong so hoc phan</p>
-                <strong th:text="${categoryPage.totalElements} + ' hoc phan'">0 hoc phan</strong>
+                <p class="toolbar-label">Tổng số học phần</p>
+                <strong th:text="${categoryPage.totalElements} + ' học phần'">0 học phần</strong>
             </div>
             <div class="admin-actions">
                 <div>
-                <p class="toolbar-label">Trang hien tai</p>
-                <strong th:text="|${currentPage + 1} / ${displayTotalPages}|">1 / 1</strong>
+                    <p class="toolbar-label">Trang hiện tại</p>
+                    <strong th:text="|${currentPage + 1} / ${displayTotalPages}|">1 / 1</strong>
                 </div>
-                <a class="page-link" th:href="@{/admin/courses}">Quan ly Course</a>
+                <a class="page-link" th:href="@{/courses}">Danh sách học phần</a>
+                <a class="page-link" th:href="@{/enroll}">Đăng ký học phần</a>
+                <a class="page-link" th:href="@{/register}" sec:authorize="isAnonymous()">Đăng ký sinh viên</a>
+                <a class="page-link" th:href="@{/login}" sec:authorize="isAnonymous()">Đăng nhập</a>
+                <a class="page-link" th:href="@{/admin/courses}" sec:authorize="hasRole('ADMIN')">Quản lý học phần</a>
+                <form class="inline-form" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <button class="page-link logout-btn" type="submit">Đăng xuất</button>
+                </form>
             </div>
         </section>
 
@@ -33,39 +47,47 @@
             <article class="course-card" th:each="category : ${categoryPage.content}">
                 <img class="course-image" th:src="${category.displayImageUrl}" th:alt="${category.name}">
                 <div class="course-body">
-                    <p class="course-badge" th:text="${category.credits} + ' tin chi'">3 tin chi</p>
-                    <h2 th:text="${category.name}">Ten hoc phan</h2>
+                    <p class="course-badge" th:text="${category.credits} + ' tín chỉ'">3 tín chỉ</p>
+                    <h2 th:text="${category.name}">Tên học phần</h2>
                     <p class="course-lecturer">
-                        Giang vien:
-                        <span th:text="${category.lecturer}">Ten giang vien</span>
+                        Giảng viên:
+                        <span th:text="${category.lecturer}">Tên giảng viên</span>
                     </p>
+                    <div style="margin-top: 16px;" sec:authorize="hasRole('STUDENT')">
+                        <form th:if="${enrolledCourseIds != null && not #sets.contains(enrolledCourseIds, category.id)}" th:action="@{/enroll/{id}(id=${category.id})}" method="post" style="margin: 0;">
+                            <button class="page-link page-number active" type="submit" style="width: 100%; text-align: center;">Enroll</button>
+                        </form>
+                        <form th:if="${enrolledCourseIds != null && #sets.contains(enrolledCourseIds, category.id)}" th:action="@{/unenroll/{id}(id=${category.id})}" method="post" style="margin: 0;">
+                            <button class="page-link delete-btn" type="submit" style="width: 100%; text-align: center;">Hủy</button>
+                        </form>
+                    </div>
                 </div>
             </article>
         </section>
 
         <section class="empty-state" th:if="${categoryPage.totalElements == 0}">
-            <h2>Chua co hoc phan nao</h2>
-            <p>Hay them du lieu vao bang <strong>course</strong> trong MySQL de trang Home hien thi danh sach.</p>
+            <h2>Chưa có học phần nào</h2>
+            <p>Hãy thêm dữ liệu vào bảng <strong>course</strong> trong MySQL để trang chủ hiển thị danh sách.</p>
         </section>
 
         <nav class="pagination" th:if="${categoryPage.totalPages > 1}">
             <a class="page-link"
                th:classappend="${!categoryPage.hasPrevious()} ? ' disabled'"
-               th:href="@{/(page=${previousPage})}">
-                Trang truoc
+               th:href="@{/courses(page=${previousPage})}">
+                Trang trước
             </a>
 
             <a class="page-link page-number"
                th:each="pageNumber : ${pageNumbers}"
                th:classappend="${pageNumber == currentPage} ? ' active'"
-               th:href="@{/(page=${pageNumber})}"
+               th:href="@{/courses(page=${pageNumber})}"
                th:text="${pageNumber + 1}">
                 1
             </a>
 
             <a class="page-link"
                th:classappend="${!categoryPage.hasNext()} ? ' disabled'"
-               th:href="@{/(page=${nextPage})}">
+               th:href="@{/courses(page=${nextPage})}">
                 Trang sau
             </a>
         </nav>

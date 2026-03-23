@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản sinh viên</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Đăng ký Sinh viên</p>
+            <h1>Đăng ký tài khoản sinh viên</h1>
+            <p class="hero-copy">Nhập username, password và email. Sau khi đăng ký thành công, tài khoản sẽ được gán quyền STUDENT.</p>
+        </section>
+
+        <section class="admin-form-shell">
+            <p class="form-message error-message" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+            <p class="form-message success-message" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+            <form class="admin-form" th:action="@{/register}" th:object="${studentForm}" method="post">
+                <label>
+                    Username
+                    <input type="text" th:field="*{username}" required>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}" required>
+                </label>
+
+                <label>
+                    Email
+                    <input type="email" th:field="*{email}" required>
+                </label>
+
+                <div class="admin-actions">
+                    <a class="page-link" th:href="@{/home}">Về Trang Chủ</a>
+                    <a class="page-link" th:href="@{/login}">Đăng nhập</a>
+                    <button class="page-link page-number active" type="submit">Đăng ký</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
