@@ -1,0 +1,11 @@
+<svg width="640" height="400" viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="400" rx="40" fill="#FFF8E6"/>
+  <path d="M120 110H520" stroke="#D0A236" stroke-width="24" stroke-linecap="round"/>
+  <path d="M160 166H480" stroke="#E8C97C" stroke-width="18" stroke-linecap="round"/>
+  <rect x="120" y="212" width="400" height="104" rx="30" fill="#24313F"/>
+  <rect x="160" y="236" width="84" height="58" rx="16" fill="#D0A236"/>
+  <rect x="264" y="236" width="84" height="58" rx="16" fill="#E8C97C"/>
+  <rect x="368" y="236" width="112" height="58" rx="16" fill="#F4E2AF"/>
+  <circle cx="140" cy="82" r="32" fill="#24313F"/>
+  <text x="188" y="286" fill="#FFF8E6" font-size="30" font-family="Trebuchet MS, sans-serif" font-weight="700">Software Design</text>
+</svg>

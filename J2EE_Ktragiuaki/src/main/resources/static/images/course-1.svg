@@ -1,0 +1,10 @@
+<svg width="640" height="400" viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="400" rx="40" fill="#FFF4E2"/>
+  <circle cx="110" cy="100" r="70" fill="#F1B17A"/>
+  <rect x="210" y="70" width="320" height="34" rx="17" fill="#D96C3D"/>
+  <rect x="210" y="128" width="250" height="24" rx="12" fill="#EBC59F"/>
+  <rect x="72" y="220" width="496" height="108" rx="26" fill="#24313F"/>
+  <path d="M112 274H528" stroke="#FFF4E2" stroke-width="18" stroke-linecap="round"/>
+  <path d="M112 310H404" stroke="#F1B17A" stroke-width="18" stroke-linecap="round"/>
+  <text x="210" y="285" fill="#FFF4E2" font-size="38" font-family="Trebuchet MS, sans-serif" font-weight="700">Java</text>
+</svg>

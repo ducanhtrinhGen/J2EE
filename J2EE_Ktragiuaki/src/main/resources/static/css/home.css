@@ -1,0 +1,212 @@
+:root {
+    --bg: #f3efe5;
+    --surface: rgba(255, 250, 242, 0.86);
+    --surface-strong: #fffdf8;
+    --text: #24313f;
+    --muted: #6a7683;
+    --accent: #d96c3d;
+    --accent-deep: #9d4022;
+    --line: rgba(36, 49, 63, 0.12);
+    --shadow: 0 18px 40px rgba(95, 77, 59, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(217, 108, 61, 0.22), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(88, 144, 122, 0.18), transparent 24%),
+        linear-gradient(180deg, #f7f2e8 0%, #efe5d7 100%);
+}
+
+.page-shell {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 40px 0 56px;
+}
+
+.hero {
+    padding: 28px 30px;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255, 250, 242, 0.94), rgba(245, 233, 217, 0.9));
+    box-shadow: var(--shadow);
+}
+
+.eyebrow {
+    margin: 0 0 10px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.05;
+}
+
+.hero-copy {
+    max-width: 680px;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 22px 0 26px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+}
+
+.toolbar-label {
+    margin: 0 0 4px;
+    font-size: 0.88rem;
+    color: var(--muted);
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 20px;
+}
+
+.empty-state {
+    margin-top: 24px;
+    padding: 28px;
+    border: 1px dashed var(--line);
+    border-radius: 24px;
+    background: rgba(255, 252, 247, 0.85);
+    text-align: center;
+}
+
+.empty-state h2 {
+    margin: 0 0 10px;
+    font-size: 1.4rem;
+}
+
+.empty-state p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.course-card {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--surface-strong);
+    box-shadow: var(--shadow);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 44px rgba(95, 77, 59, 0.16);
+}
+
+.course-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: linear-gradient(135deg, #f5d6b5, #f4ede4);
+}
+
+.course-body {
+    padding: 18px 18px 22px;
+}
+
+.course-badge {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(217, 108, 61, 0.12);
+    color: var(--accent-deep);
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.course-body h2 {
+    margin: 0 0 10px;
+    font-size: 1.16rem;
+    line-height: 1.4;
+}
+
+.course-lecturer {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255, 252, 247, 0.95);
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.page-link:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+.page-number.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.page-link.disabled {
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+@media (max-width: 720px) {
+    .page-shell {
+        width: min(100% - 20px, 1120px);
+        padding-top: 20px;
+    }
+
+    .hero,
+    .toolbar {
+        padding: 20px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+}

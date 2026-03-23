@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách học phần</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Category Catalog</p>
+            <h1>Danh sach hoc phan</h1>
+            <p class="hero-copy">
+            </p>
+        </section>
+
+        <section class="toolbar">
+            <div>
+                <p class="toolbar-label">Tong so hoc phan</p>
+                <strong th:text="${categoryPage.totalElements} + ' hoc phan'">0 hoc phan</strong>
+            </div>
+            <div>
+                <p class="toolbar-label">Trang hien tai</p>
+                <strong th:text="|${currentPage + 1} / ${displayTotalPages}|">1 / 1</strong>
+            </div>
+        </section>
+
+        <section class="course-grid">
+            <article class="course-card" th:each="category : ${categoryPage.content}">
+                <img class="course-image" th:src="${category.displayImageUrl}" th:alt="${category.name}">
+                <div class="course-body">
+                    <p class="course-badge" th:text="${category.credits} + ' tin chi'">3 tin chi</p>
+                    <h2 th:text="${category.name}">Ten hoc phan</h2>
+                    <p class="course-lecturer">
+                        Giang vien:
+                        <span th:text="${category.lecturer}">Ten giang vien</span>
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <section class="empty-state" th:if="${categoryPage.totalElements == 0}">
+            <h2>Chua co hoc phan nao</h2>
+            <p>Hay them du lieu vao bang <strong>course</strong> trong MySQL de trang Home hien thi danh sach.</p>
+        </section>
+
+        <nav class="pagination" th:if="${categoryPage.totalPages > 1}">
+            <a class="page-link"
+               th:classappend="${!categoryPage.hasPrevious()} ? ' disabled'"
+               th:href="@{/(page=${previousPage})}">
+                Trang truoc
+            </a>
+
+            <a class="page-link page-number"
+               th:each="pageNumber : ${pageNumbers}"
+               th:classappend="${pageNumber == currentPage} ? ' active'"
+               th:href="@{/(page=${pageNumber})}"
+               th:text="${pageNumber + 1}">
+                1
+            </a>
+
+            <a class="page-link"
+               th:classappend="${!categoryPage.hasNext()} ? ' disabled'"
+               th:href="@{/(page=${nextPage})}">
+                Trang sau
+            </a>
+        </nav>
+    </main>
+</body>
+</html>

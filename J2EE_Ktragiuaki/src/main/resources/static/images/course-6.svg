@@ -1,0 +1,11 @@
+<svg width="640" height="400" viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="400" rx="40" fill="#EDF6FF"/>
+  <circle cx="134" cy="112" r="58" fill="#6BA1D8"/>
+  <circle cx="470" cy="260" r="86" fill="#BDD8F1"/>
+  <path d="M164 112H496" stroke="#2D5F8A" stroke-width="20" stroke-linecap="round"/>
+  <path d="M164 164H444" stroke="#8CB9E0" stroke-width="18" stroke-linecap="round"/>
+  <rect x="112" y="212" width="280" height="96" rx="28" fill="#2D5F8A"/>
+  <path d="M168 260H336" stroke="#EDF6FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M436 136L484 184L548 120" stroke="#2D5F8A" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="146" y="286" fill="#EDF6FF" font-size="30" font-family="Trebuchet MS, sans-serif" font-weight="700">Networks</text>
+</svg>
