@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập hệ thống</title>
+    <title>Dang nhap he thong</title>
     <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
     <main class="page-shell">
         <section class="hero">
-            <p class="eyebrow">Đăng nhập</p>
-            <h1>Đăng nhập tài khoản</h1>
-            <p class="hero-copy">Đăng nhập bằng username và password. Sau khi thành công hệ thống sẽ chuyển về trang /home.</p>
+            <p class="eyebrow">Login</p>
+            <h1>Dang nhap tai khoan</h1>
+            <p class="hero-copy">Dang nhap bang username va password. Sau khi thanh cong he thong se chuyen ve trang /home.</p>
         </section>
 
         <section class="admin-form-shell">
             <p class="form-message error-message" th:if="${errorMessage}" th:text="${errorMessage}"></p>
             <p class="form-message success-message" th:if="${successMessage}" th:text="${successMessage}"></p>
-
-            <form class="admin-form" th:action="@{/login}" method="post">
+               <form class="admin-form" th:action="@{/login}" method="post">
                 <label>
                     Username
                     <input type="text" name="username" required>
@@ -30,9 +29,9 @@
                 </label>
 
                 <div class="admin-actions">
-                    <a class="page-link" th:href="@{/courses}">Về danh sách học phần</a>
-                    <a class="page-link" th:href="@{/register}">Đăng ký Sinh viên</a>
-                    <button class="page-link page-number active" type="submit">Đăng nhập</button>
+                    <a class="page-link" th:href="@{/courses}">Ve danh sach hoc phan</a>
+                    <a class="page-link" th:href="@{/register}">Dang ky Student</a>
+                    <button class="page-link page-number active" type="submit">Dang nhap</button>
                 </div>
             </form>
         </section>
