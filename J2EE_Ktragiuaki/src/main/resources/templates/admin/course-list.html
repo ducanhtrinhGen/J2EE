@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quan ly hoc phan</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Admin Course</p>
+            <h1>Quan ly hoc phan</h1>
+            <p class="hero-copy">Thuc hien Create, Update, Delete hoc phan cho ADMIN.</p>
+        </section>
+
+        <section class="toolbar admin-toolbar">
+            <div>
+                <p class="toolbar-label">Tong hoc phan</p>
+                <strong th:text="${courses.size()} + ' hoc phan'">0 hoc phan</strong>
+            </div>
+            <div class="admin-actions">
+                <a class="page-link" th:href="@{/home}">Ve Home</a>
+                <a class="page-link page-number active" th:href="@{/admin/courses/create}">Create Course</a>
+            </div>
+        </section>
+
+        <section class="admin-table-shell" th:if="${!courses.isEmpty()}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ten hoc phan</th>
+                        <th>So tin chi</th>
+                        <th>Giang vien</th>
+                        <th>Hinh anh</th>
+                        <th>Thao tac</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="course : ${courses}">
+                        <td th:text="${course.id}">1</td>
+                        <td th:text="${course.name}">Lap trinh Java</td>
+                        <td th:text="${course.credits}">3</td>
+                        <td th:text="${course.lecturer}">Nguyen Van A</td>
+                        <td th:text="${course.imageUrl}">java.jpg</td>
+                        <td class="action-cell">
+                            <a class="page-link" th:href="@{/admin/courses/edit/{id}(id=${course.id})}">Update</a>
+                            <form th:action="@{/admin/courses/delete/{id}(id=${course.id})}" method="post">
+                                <button class="page-link delete-btn" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="empty-state" th:if="${courses.isEmpty()}">
+            <h2>Chua co hoc phan nao</h2>
+            <p>Hay bam Create Course de them hoc phan moi.</p>
+        </section>
+    </main>
+</body>
+</html>

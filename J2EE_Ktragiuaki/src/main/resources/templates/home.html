@@ -20,9 +20,12 @@
                 <p class="toolbar-label">Tong so hoc phan</p>
                 <strong th:text="${categoryPage.totalElements} + ' hoc phan'">0 hoc phan</strong>
             </div>
-            <div>
+            <div class="admin-actions">
+                <div>
                 <p class="toolbar-label">Trang hien tai</p>
                 <strong th:text="|${currentPage + 1} / ${displayTotalPages}|">1 / 1</strong>
+                </div>
+                <a class="page-link" th:href="@{/admin/courses}">Quan ly Course</a>
             </div>
         </section>
 

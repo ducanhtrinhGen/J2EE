@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${formTitle}">Course Form</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Admin Course</p>
+            <h1 th:text="${formTitle}">Create Course</h1>
+            <p class="hero-copy">Nhap thong tin hoc phan gom ten, so tin chi, giang vien va ten file hinh anh.</p>
+        </section>
+
+        <section class="admin-form-shell">
+            <form class="admin-form" th:action="${formAction}" th:object="${course}" method="post">
+                <label>
+                    Ten hoc phan
+                    <input type="text" th:field="*{name}" required>
+                </label>
+
+                <label>
+                    So tin chi
+                    <input type="number" min="1" th:field="*{credits}" required>
+                </label>
+
+                <label>
+                    Giang vien
+                    <input type="text" th:field="*{lecturer}" required>
+                </label>
+
+                <label>
+                    Hinh anh
+                    <input type="text" th:field="*{imageUrl}" placeholder="java.jpg hoac /images/course-1.svg" required>
+                </label>
+
+                <div class="admin-actions">
+                    <a class="page-link" th:href="@{/admin/courses}">Huy</a>
+                    <button class="page-link page-number active" type="submit">Luu</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

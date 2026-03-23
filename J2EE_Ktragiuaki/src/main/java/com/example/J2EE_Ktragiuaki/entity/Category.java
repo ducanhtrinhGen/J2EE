@@ -27,7 +27,7 @@ public class Category {
     @Column(name = "image", nullable = false, length = 255)
     private String imageUrl;
 
-    protected Category() {
+    public Category() {
     }
 
     public Category(String name, int credits, String lecturer, String imageUrl) {
