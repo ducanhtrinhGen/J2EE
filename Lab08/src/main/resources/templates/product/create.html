@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sản phẩm Mới</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/css/product-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar (same as products.html) -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo">ShopPro</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home nav-icon"></i>
+                <span>Trang chủ</span>
+            </a>
+            <a href="/products" class="nav-link">
+                <i class="fas fa-boxes nav-icon"></i>
+                <span>Sản phẩm</span>
+            </a>
+        </nav>
+        <div class="user-section">
+            <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
+                <div style="color: #a0a0a0; font-size: 13px;">Quản trị viên</div>
+            </div>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span>Đăng xuất</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="header">
+                <div class="page-title">Thêm Sản phẩm Mới</div>
+                <a href="/products" class="btn-secondary" style="padding: 14px 28px; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Quay lại danh sách
+                </a>
+            </div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <form th:action="@{/products/create}" th:object="${product}" method="post" enctype="multipart/form-data">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tên sản phẩm <span style="color: var(--warning);">*</span></label>
+                        <input type="text" class="form-input" th:field="*{name}" placeholder="Nhập tên sản phẩm" required>
+                        <span class="error-message" th:errors="*{name}" style="color: var(--danger); font-size: 13px; margin-top: 5px; display: block;"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Giá sản phẩm <span style="color: var(--warning);">*</span></label>
+                        <input type="number" class="form-input" th:field="*{price}" placeholder="0" min="0" step="1000" required>
+                        <span class="error-message" th:errors="*{price}" style="color: var(--danger); font-size: 13px; margin-top: 5px; display: block;"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Danh mục</label>
+                        <select class="form-select" name="category">
+                            <option value="">Chọn danh mục</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ảnh sản phẩm</label>
+                        <input type="file" id="imageInput" name="imageProduct" class="form-input" accept="image/*" onchange="previewImage()">
+                        <div id="imagePreview" style="display: none; margin-top: 15px;">
+                            <img id="previewImg" class="image-preview" src="#" alt="Preview">
+                            <p style="margin-top: 10px; color: var(--text-secondary); font-size: 14px;">📁 Ảnh đã chọn sẽ thay thế ảnh hiện tại</p>
+                        </div>
+                        <small style="color: var(--text-secondary); font-size: 13px;">Chấp nhận: JPG, PNG (tối đa 5MB)</small>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Thêm sản phẩm
+                        </button>
+                        <a href="/products" class="btn-secondary" style="padding: 14px 28px; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-times"></i> Hủy bỏ
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function previewImage() {
+            const fileInput = document.getElementById('imageInput');
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

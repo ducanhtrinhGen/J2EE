@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/css/product-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo">ShopPro</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home nav-icon"></i>
+                <span>Trang chủ</span>
+            </a>
+            <a href="/products" class="nav-link">
+                <i class="fas fa-boxes nav-icon"></i>
+                <span>Sản phẩm</span>
+            </a>
+            <a href="/cart" class="nav-link active">
+                <i class="fas fa-cart-shopping nav-icon"></i>
+                <span>Giỏ hàng</span>
+                <span th:if="${cartItemCount > 0}" class="nav-badge" th:text="${cartItemCount}">0</span>
+            </a>
+        </nav>
+        <div class="user-section">
+            <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
+                <div style="color: #a0a0a0; font-size: 13px;">Người dùng</div>
+            </div>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span>Đăng xuất</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="header">
+                <div>
+                    <div class="page-title">Giỏ hàng</div>
+                    <div class="page-subtitle">Sản phẩm được lưu trong session của phiên đăng nhập hiện tại.</div>
+                </div>
+                <a href="/products" class="btn-secondary" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                </a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(cartItems)}" class="empty-state">
+                <div class="empty-icon">🛒</div>
+                <h3 style="font-size: 24px; margin-bottom: 10px;">Giỏ hàng đang trống</h3>
+                <p style="color: var(--text-secondary);">Hãy thêm một vài sản phẩm để bắt đầu.</p>
+                <a href="/products" class="btn-primary" style="margin-top: 20px; display: inline-block;">
+                    <i class="fas fa-box"></i> Xem sản phẩm
+                </a>
+            </div>
+
+            <div th:if="${checkoutError}" class="alert-error" style="margin-bottom: 20px;">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span th:text="${checkoutError}">Checkout failed</span>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(cartItems)}" class="cart-layout">
+                <div class="cart-list">
+                    <div th:each="item : ${cartItems}" class="cart-item-card">
+                        <div class="cart-item-image-wrap">
+                            <img th:if="${item.image}"
+                                 th:src="@{/products/image/{img}(img=${item.image})}"
+                                 alt="Ảnh sản phẩm"
+                                 class="cart-item-image"
+                                 onerror="this.style.display='none'">
+                            <div th:unless="${item.image}" class="cart-item-image cart-item-placeholder">📦</div>
+                        </div>
+
+                        <div class="cart-item-content">
+                            <h3 th:text="${item.productName}">Tên sản phẩm</h3>
+                            <div class="cart-meta" th:text="'Đơn giá: ' + ${#numbers.formatInteger(item.price, 0, 'COMMA')} + ' ₫'">
+                                Đơn giá: 0 ₫
+                            </div>
+                            <div class="cart-meta" th:text="'Thành tiền: ' + ${#numbers.formatInteger(item.subtotal, 0, 'COMMA')} + ' ₫'">
+                                Thành tiền: 0 ₫
+                            </div>
+
+                            <div class="cart-actions">
+                                <form th:action="@{/cart/update}" method="post" class="cart-update-form">
+                                    <input type="hidden" name="productId" th:value="${item.productId}">
+                                    <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="quantity-input">
+                                    <button type="submit" class="btn-primary">Cập nhật</button>
+                                </form>
+
+                                <form th:action="@{/cart/remove/{id}(id=${item.productId})}" method="post">
+                                    <button type="submit" class="btn-danger">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Tóm tắt đơn hàng</h3>
+                    <div class="summary-row">
+                        <span>Tổng số lượng</span>
+                        <strong th:text="${cartTotalQuantity}">0</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tổng tiền</span>
+                        <strong th:text="${#numbers.formatInteger(cartTotalAmount, 0, 'COMMA')} + ' ₫'">0 ₫</strong>
+                    </div>
+                    <a href="/products" class="btn-primary summary-button" style="text-decoration: none;">
+                        Thêm sản phẩm khác
+                    </a>
+                    <form th:action="@{/cart/checkout}" method="post" style="margin-top: 12px;">
+                        <button type="submit" class="btn-success summary-button">
+                            <i class="fas fa-bag-shopping"></i> Đặt hàng
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

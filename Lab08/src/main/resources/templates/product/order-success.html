@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/css/product-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo">ShopPro</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home nav-icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="/products" class="nav-link">
+                <i class="fas fa-boxes nav-icon"></i>
+                <span>Products</span>
+            </a>
+            <a href="/cart" class="nav-link">
+                <i class="fas fa-cart-shopping nav-icon"></i>
+                <span>Cart</span>
+                <span th:if="${cartItemCount > 0}" class="nav-badge" th:text="${cartItemCount}">0</span>
+            </a>
+        </nav>
+        <div class="user-section">
+            <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
+                <div style="color: #a0a0a0; font-size: 13px;">Customer</div>
+            </div>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="header">
+                <div>
+                    <div class="page-title">Order Placed Successfully</div>
+                    <div class="page-subtitle" th:text="'Order #' + ${order.id} + ' | Created at: ' + ${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">
+                        Order #1
+                    </div>
+                </div>
+                <a href="/products" class="btn-primary" style="text-decoration: none;">
+                    <i class="fas fa-box"></i> Continue Shopping
+                </a>
+            </div>
+
+            <div class="cart-layout">
+                <div class="cart-list">
+                    <div th:each="detail : ${orderDetails}" class="cart-item-card">
+                        <div class="cart-item-content" style="grid-column: 1 / -1;">
+                            <h3 th:text="${detail.productName}">Product name</h3>
+                            <div class="cart-meta" th:text="'Unit price: ' + ${#numbers.formatInteger(detail.unitPrice, 0, 'COMMA')} + ' VND'">
+                                Unit price
+                            </div>
+                            <div class="cart-meta" th:text="'Quantity: ' + ${detail.quantity}">
+                                Quantity
+                            </div>
+                            <div class="cart-meta" th:text="'Subtotal: ' + ${#numbers.formatInteger(detail.subtotal, 0, 'COMMA')} + ' VND'">
+                                Subtotal
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Total items</span>
+                        <strong th:text="${orderTotalQuantity}">0</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total amount</span>
+                        <strong th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' VND'">0 VND</strong>
+                    </div>
+                    <a href="/products" class="btn-primary summary-button" style="text-decoration: none;">
+                        Back to Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
