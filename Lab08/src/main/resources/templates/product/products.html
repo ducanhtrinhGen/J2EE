@@ -11,191 +11,246 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="sidebar-logo">
-            <div class="logo">ShopPro</div>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="/" class="nav-link">
-                <i class="fas fa-home nav-icon"></i>
-                <span>Trang chủ</span>
-            </a>
-            <a href="/products" class="nav-link active">
-                <i class="fas fa-boxes nav-icon"></i>
-                <span>Sản phẩm</span>
-            </a>
-            <a href="/cart" class="nav-link">
-                <i class="fas fa-cart-shopping nav-icon"></i>
-                <span>Giỏ hàng</span>
-                <span th:if="${cartItemCount > 0}" class="nav-badge" th:text="${cartItemCount}">0</span>
-            </a>
-        </nav>
-        <div class="user-section">
-            <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
-            <div style="text-align: center; margin-bottom: 15px;">
-                <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
-                <div style="color: #a0a0a0; font-size: 13px;">Quản trị viên</div>
-            </div>
-            <form th:action="@{/logout}" method="post" style="margin: 0;">
-                <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
-                    <i class="fas fa-sign-out-alt nav-icon"></i>
-                    <span>Đăng xuất</span>
-                </button>
-            </form>
-        </div>
+<nav class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo">ShopPro</div>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/" class="nav-link">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Trang chủ</span>
+        </a>
+        <a href="/products" class="nav-link active">
+            <i class="fas fa-boxes nav-icon"></i>
+            <span>Sản phẩm</span>
+        </a>
+        <a href="/cart" class="nav-link">
+            <i class="fas fa-cart-shopping nav-icon"></i>
+            <span>Giỏ hàng</span>
+            <span th:if="${cartItemCount > 0}" class="nav-badge" th:text="${cartItemCount}">0</span>
+        </a>
     </nav>
+    <div class="user-section">
+        <div class="user-avatar" th:text="${#authentication.name?.substring(0,1)?.toUpperCase()}"></div>
+        <div style="text-align: center; margin-bottom: 15px;">
+            <div th:text="${#authentication.name}" style="font-weight: 600; margin-bottom: 5px;"></div>
+            <div style="color: #a0a0a0; font-size: 13px;">Quản trị viên</div>
+        </div>
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit" class="nav-link" style="width: 100%; justify-content: center; border-left: none;">
+                <i class="fas fa-sign-out-alt nav-icon"></i>
+                <span>Đăng xuất</span>
+            </button>
+        </form>
+    </div>
+</nav>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="header">
-                <div>
-                    <div class="page-title">Danh sách Sản phẩm</div>
-                    <div class="page-subtitle">Tìm kiếm, lọc, sắp xếp và thêm nhanh vào giỏ hàng.</div>
-                </div>
-                <div class="header-actions">
-                    <a href="/cart" class="btn-secondary" style="text-decoration: none;">
-                        <i class="fas fa-cart-shopping"></i> Xem giỏ hàng
-                    </a>
-                    <a th:if="${isAdmin}" href="/categories" class="btn-secondary" style="text-decoration: none;">
-                        <i class="fas fa-tags"></i> Categories
-                    </a>
-                    <a th:if="${isAdmin}" href="/products/create" class="btn-primary">
-                        <i class="fas fa-plus"></i> Thêm sản phẩm mới
-                    </a>
-                </div>
+<main class="main-content">
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="page-title">Danh sách Sản phẩm</div>
+                <div class="page-subtitle">Tìm kiếm, lọc, sắp xếp và thêm nhanh vào giỏ hàng.</div>
             </div>
-
-            <div th:if="${!isAdmin}"
-                 style="background: rgba(254, 243, 199, 0.2); border: 1px solid rgba(252, 211, 77, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
-                <i class="fas fa-info-circle" style="color: #f59e0b; margin-right: 10px;"></i>
-                <strong>Thông báo:</strong> Bạn không có quyền thêm, sửa hoặc xóa sản phẩm. Liên hệ quản trị viên.
-            </div>
-
-            <form th:action="@{/products}" method="get" class="search-filter">
-                <input type="text"
-                       name="keyword"
-                       class="search-input"
-                       th:value="${keyword}"
-                       placeholder="Tìm kiếm sản phẩm theo tên...">
-
-                <select name="categoryId" class="form-select filter-select">
-                    <option value="">Tất cả danh mục</option>
-                    <option th:each="category : ${categories}"
-                            th:value="${category.id}"
-                            th:text="${category.name}"
-                            th:selected="${selectedCategoryId != null and selectedCategoryId == category.id}">
-                        Danh mục
-                    </option>
-                </select>
-
-                <select name="sort" class="form-select filter-select">
-                    <option value="default" th:selected="${sort == 'default'}">Mặc định</option>
-                    <option value="priceAsc" th:selected="${sort == 'priceAsc'}">Giá tăng dần</option>
-                    <option value="priceDesc" th:selected="${sort == 'priceDesc'}">Giá giảm dần</option>
-                </select>
-
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-search"></i> Áp dụng
-                </button>
-
-                <a th:href="@{/products}" class="btn-secondary search-reset">
-                    Xóa lọc
+            <div class="header-actions">
+                <a href="/cart" class="btn-secondary" style="text-decoration: none;">
+                    <i class="fas fa-cart-shopping"></i> Xem giỏ hàng
                 </a>
-            </form>
-
-            <div th:if="${#lists.isEmpty(products)}" class="empty-state">
-                <div class="empty-icon">📦</div>
-                <h3 style="font-size: 24px; margin-bottom: 10px;">Không có sản phẩm phù hợp</h3>
-                <p style="color: var(--text-secondary);">Hãy thử từ khóa, danh mục hoặc cách sắp xếp khác.</p>
-                <a th:if="${isAdmin}" href="/products/create" class="btn-primary" style="margin-top: 20px; display: inline-block;">
-                    <i class="fas fa-plus"></i> Thêm sản phẩm ngay
+                <a th:if="${isAdmin}" href="/categories" class="btn-secondary" style="text-decoration: none;">
+                    <i class="fas fa-tags"></i> Categories
                 </a>
-            </div>
-
-            <div class="product-grid" th:unless="${#lists.isEmpty(products)}">
-                <div th:each="product : ${products}" class="product-card">
-                    <img th:if="${product.image}"
-                         th:src="@{/products/image/{img}(img=${product.image})}"
-                         alt="Ảnh sản phẩm"
-                         class="product-image"
-                         onerror="this.style.display='none'">
-                    <div class="product-no-image"
-                         th:unless="${product.image}"
-                         style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; border-radius: 16px; margin-bottom: 20px; color: white; font-size: 48px;">
-                        📦
-                    </div>
-                    <div class="product-info">
-                        <h3 th:text="${product.name}">Sản phẩm mẫu</h3>
-                        <div class="product-price"
-                             th:text="'Giá: ' + ${#numbers.formatInteger(product.price, 0, 'COMMA')} + ' ₫'">
-                            Giá: 0 ₫
-                        </div>
-                        <div class="product-category"
-                             th:text="'Danh mục: ' + ${product.category?.name ?: 'Không xác định'}">
-                            Danh mục: Không xác định
-                        </div>
-
-                        <form th:action="@{/cart/add}" method="post" class="cart-form">
-                            <input type="hidden" name="productId" th:value="${product.id}">
-                            <input type="hidden" name="keyword" th:value="${keyword}">
-                            <input type="hidden" name="sort" th:value="${sort}">
-                            <input type="hidden" name="page" th:value="${currentPage}">
-                            <input type="hidden" name="categoryId" th:if="${selectedCategoryId != null}" th:value="${selectedCategoryId}">
-
-                            <label class="cart-label">Số lượng</label>
-                            <div class="cart-form-row">
-                                <input type="number" name="quantity" min="1" value="1" class="quantity-input">
-                                <button type="submit" class="btn-primary btn-add-cart">
-                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-                                </button>
-                            </div>
-                        </form>
-
-                        <div th:if="${isAdmin}" class="admin-actions">
-                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn-warning" style="text-decoration: none;">
-                                <i class="fas fa-edit"></i> Sửa
-                            </a>
-                            <a th:href="@{/products/delete/{id}(id=${product.id})}"
-                               class="btn-danger"
-                               style="text-decoration: none;"
-                               onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
-                                <i class="fas fa-trash"></i> Xóa
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div th:if="${totalPages > 1}" class="pagination">
-                <a th:if="${hasPrevious}"
-                   th:href="@{/products(page=${currentPage - 1}, keyword=${keyword}, categoryId=${selectedCategoryId}, sort=${sort})}"
-                   class="pagination-link">
-                    Previous
+                <a th:if="${isAdmin}" href="/products/create" class="btn-primary">
+                    <i class="fas fa-plus"></i> Thêm sản phẩm mới
                 </a>
-                <span th:unless="${hasPrevious}" class="pagination-link pagination-link-disabled">Previous</span>
-
-                <span class="pagination-info"
-                      th:text="'Trang ' + ${currentPage + 1} + ' / ' + ${totalPages}">
-                    Trang 1 / 1
-                </span>
-
-                <a th:if="${hasNext}"
-                   th:href="@{/products(page=${currentPage + 1}, keyword=${keyword}, categoryId=${selectedCategoryId}, sort=${sort})}"
-                   class="pagination-link">
-                    Next
-                </a>
-                <span th:unless="${hasNext}" class="pagination-link pagination-link-disabled">Next</span>
             </div>
         </div>
-    </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = (index * 0.1) + 's';
-            });
+        <div th:if="${!isAdmin}"
+             style="background: rgba(254, 243, 199, 0.2); border: 1px solid rgba(252, 211, 77, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+            <i class="fas fa-info-circle" style="color: #f59e0b; margin-right: 10px;"></i>
+            <strong>Thông báo:</strong> Bạn không có quyền thêm, sửa hoặc xóa sản phẩm. Liên hệ quản trị viên.
+        </div>
+
+        <form id="productFilterForm" th:action="@{/products}" method="get" class="search-filter">
+            <input id="keywordInput"
+                   type="text"
+                   name="keyword"
+                   class="search-input"
+                   th:value="${keyword}"
+                   placeholder="Tìm kiếm sản phẩm theo tên...">
+
+            <select id="categorySelect" name="categoryId" class="form-select filter-select">
+                <option value="">Tất cả danh mục</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"
+                        th:selected="${selectedCategoryId != null and selectedCategoryId == category.id}">
+                    Danh mục
+                </option>
+            </select>
+
+            <select id="sortSelect" name="sort" class="form-select filter-select">
+                <option value="default" th:selected="${sort == 'default'}">Mặc định</option>
+                <option value="priceAsc" th:selected="${sort == 'priceAsc'}">Giá tăng dần</option>
+                <option value="priceDesc" th:selected="${sort == 'priceDesc'}">Giá giảm dần</option>
+            </select>
+
+            <a th:href="@{/products}" class="btn-secondary search-reset">
+                Xóa lọc
+            </a>
+        </form>
+
+        <div th:if="${#lists.isEmpty(products)}" class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h3 style="font-size: 24px; margin-bottom: 10px;">Không có sản phẩm phù hợp</h3>
+            <p style="color: var(--text-secondary);">Hãy thử từ khóa, danh mục hoặc cách sắp xếp khác.</p>
+            <a th:if="${isAdmin}" href="/products/create" class="btn-primary" style="margin-top: 20px; display: inline-block;">
+                <i class="fas fa-plus"></i> Thêm sản phẩm ngay
+            </a>
+        </div>
+
+        <div class="product-grid" th:unless="${#lists.isEmpty(products)}">
+            <div th:each="product : ${products}" class="product-card">
+                <img th:if="${product.image}"
+                     th:src="@{/products/image/{img}(img=${product.image})}"
+                     alt="Ảnh sản phẩm"
+                     class="product-image"
+                     onerror="this.style.display='none'">
+                <div class="product-no-image"
+                     th:unless="${product.image}"
+                     style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; border-radius: 16px; margin-bottom: 20px; color: white; font-size: 48px;">
+                    📦
+                </div>
+                <div class="product-info">
+                    <h3 th:text="${product.name}">Sản phẩm mẫu</h3>
+                    <div class="product-price"
+                         th:text="'Giá: ' + ${#numbers.formatInteger(product.price, 0, 'COMMA')} + ' ₫'">
+                        Giá: 0 ₫
+                    </div>
+                    <div class="product-category"
+                         th:text="'Danh mục: ' + ${product.category?.name ?: 'Không xác định'}">
+                        Danh mục: Không xác định
+                    </div>
+
+                    <form th:action="@{/cart/add}" method="post" class="cart-form">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="hidden" name="keyword" th:value="${keyword}">
+                        <input type="hidden" name="sort" th:value="${sort}">
+                        <input type="hidden" name="page" th:value="${currentPage}">
+                        <input type="hidden" name="categoryId" th:if="${selectedCategoryId != null}" th:value="${selectedCategoryId}">
+
+                        <label class="cart-label">Số lượng</label>
+                        <div class="cart-form-row">
+                            <input type="number" name="quantity" min="1" value="1" class="quantity-input">
+                            <button type="submit" class="btn-primary btn-add-cart">
+                                <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                            </button>
+                        </div>
+                    </form>
+
+                    <div th:if="${isAdmin}" class="admin-actions">
+                        <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn-warning" style="text-decoration: none;">
+                            <i class="fas fa-edit"></i> Sửa
+                        </a>
+                        <a th:href="@{/products/delete/{id}(id=${product.id})}"
+                           class="btn-danger"
+                           style="text-decoration: none;"
+                           onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                            <i class="fas fa-trash"></i> Xóa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${totalPages > 1}" class="pagination">
+            <a th:if="${hasPrevious}"
+               th:href="@{/products(page=${currentPage - 1}, keyword=${keyword}, categoryId=${selectedCategoryId}, sort=${sort})}"
+               class="pagination-link">
+                Previous
+            </a>
+            <span th:unless="${hasPrevious}" class="pagination-link pagination-link-disabled">Previous</span>
+
+            <span class="pagination-info"
+                  th:text="'Trang ' + ${currentPage + 1} + ' / ' + ${totalPages}">
+                Trang 1 / 1
+            </span>
+
+            <a th:if="${hasNext}"
+               th:href="@{/products(page=${currentPage + 1}, keyword=${keyword}, categoryId=${selectedCategoryId}, sort=${sort})}"
+               class="pagination-link">
+                Next
+            </a>
+            <span th:unless="${hasNext}" class="pagination-link pagination-link-disabled">Next</span>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = (index * 0.1) + 's';
         });
-    </script>
+
+        const filterForm = document.getElementById('productFilterForm');
+        const keywordInput = document.getElementById('keywordInput');
+        const categorySelect = document.getElementById('categorySelect');
+        const sortSelect = document.getElementById('sortSelect');
+
+        if (!filterForm) {
+            return;
+        }
+
+        const submitFilters = function() {
+            if (typeof filterForm.requestSubmit === 'function') {
+                filterForm.requestSubmit();
+            } else {
+                filterForm.submit();
+            }
+        };
+
+        if (categorySelect) {
+            categorySelect.addEventListener('change', submitFilters);
+        }
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', submitFilters);
+        }
+
+        if (keywordInput) {
+            let keywordTimer;
+            let isComposing = false;
+
+            keywordInput.addEventListener('compositionstart', function() {
+                isComposing = true;
+                clearTimeout(keywordTimer);
+            });
+
+            keywordInput.addEventListener('compositionend', function() {
+                isComposing = false;
+                clearTimeout(keywordTimer);
+                keywordTimer = setTimeout(submitFilters, 300);
+            });
+
+            keywordInput.addEventListener('input', function() {
+                if (isComposing) {
+                    return;
+                }
+
+                clearTimeout(keywordTimer);
+                keywordTimer = setTimeout(submitFilters, 450);
+            });
+
+            keywordInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    clearTimeout(keywordTimer);
+                    submitFilters();
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
